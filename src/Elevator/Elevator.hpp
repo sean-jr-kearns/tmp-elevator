@@ -1,0 +1,82 @@
+#pragma once
+
+#include <string>
+#include <vector>
+
+namespace Demo
+{
+    class Elevator 
+    {
+    public:
+        /*
+        * @brief default constructor (deleted)
+        */
+        Elevator() = delete;
+
+        /*
+        * @brief constructor with inputs
+        * @param[in] floor_travel_time Time it takes to travel between floors
+        * @param[in] starting_floor Floor that the elevator starts at
+        * @param[in] number_of_floors Total number of accessible floors
+        */
+        Elevator(int floor_travel_time, int starting_floor, int number_of_floors);
+
+        /*
+        * @brief destructor
+        */
+        virtual ~Elevator();
+
+        /*
+        * @brief copy constructor (deleted)
+        */
+        Elevator(const Elevator& that) = delete;
+    
+    public:
+        /*
+        * @brief Gets total travel time between two traversable floors
+        * @param[in] travel_time Time it takes to travel between floors
+        * @param[in] floors Total number of floors traveled to
+        * @return Returns true if travel time is acquired, otherwise returns false
+        */
+        int get_travel_duration_between_floors(int travel_time, int last_floor, int next_floor);
+
+        /*
+        * @brief Travels ordered floors
+        * @param[in] floors Floors to be traveled to
+        * @return Returns true if traveled floors are acquired, otherwise returns false
+        */
+        bool traverse_floors(std::vector<int> floors);
+
+        /*
+        * @brief Sets travel time between sequential floors
+        * @return Returns true if travel time is set, otherwise returns false
+        */
+        bool set_floor_travel_time(int travel_time);
+
+         /*
+        * @brief Sets starting floor
+        * @return Returns true if starting floor is set, otherwise returns false
+        */
+        bool set_starting_floor(int starting_floor);
+
+         /*
+        * @brief Sets total number of floors accessible by the elevator for travel
+        * @return Returns true if number of floors is set, otherwise returns false
+        */
+        bool set_number_of_floors(int number_of_floors);
+
+    private: 
+        //* Travel time between sequential floors
+        int m_floor_travel_time;
+
+        //* Starting floor of the elevator
+        int m_starting_floor;
+
+        //* Last floor the elevator was at
+        int m_last_floor;
+
+        //* Total number of accessible floors 
+        int m_number_of_floors;
+
+    }; //class Elevator
+}; //namespace Demo

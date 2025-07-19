@@ -2,7 +2,7 @@
 This project represents a possible implementation of an elevator. To provide 
 details on personal interactions with various languages the initial solution 
 is a prototype in python under `./prototypes` and the core implementation 
-is with c++.
+is with c++17.
 
 ## Assumptions
 There are several assumptions associated with the project and can be found below.
@@ -44,7 +44,8 @@ Below are the required commands to install pre-reqs (e.g. `Ubuntu 22.04`).
 
 ```bash
 sudo apt-get install build-essential cmake g++ Python3.10
-sudo apt install gdb
+sudo apt-get install gdb
+sudo apt-get install cppcheck valgrind
 pip3 install conan
 pip3 show conan
 conan profile detect
@@ -55,13 +56,54 @@ Below are commands to sanity check installations occurred as expected.
 
 ```bash
 g++ --version
+cppcheck --version
+valgrind --version
 python3 --version
 gdb --version
 conan --version
-
 ```
 
 One can make changes in the future to their conan profile here `~/.conan2/profiles/default`.
+
+### Static Analysis
+To run static analysis on this project execute the following:
+
+```bash
+cd ~/{project-root}/src
+cppcheck --enable=all --inconclusive --std=c++17 --output-file=./reports/cppcheck_report.txt .
+```
+
+Validate in this projects reports directory that `cppcheck_report.txt` is empty
+
+### Dynamic Analysis
+To run dynamic analysis on this project execute the following:
+
+```bash
+cd ~/{project-root}/deploy
+valgrind --leak-check=full --show-leak-kinds=all \
+         --track-origins=yes --log-file=../reports/valgrind_report.txt \
+         ./bin/main 100 12 1,2,12,17,99 
+```
+
+On completion a report like below should be produced in this projects `reports` directory
+
+```log
+==27536== Memcheck, a memory error detector
+==27536== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==27536== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==27536== Command: ./bin/main 100 12 1,2,12,17,99
+==27536== Parent PID: 468
+==27536== 
+==27536== 
+==27536== HEAP SUMMARY:
+==27536==     in use at exit: 0 bytes in 0 blocks
+==27536==   total heap usage: 29 allocs, 29 frees, 82,347 bytes allocated
+==27536== 
+==27536== All heap blocks were freed -- no leaks are possible
+==27536== 
+==27536== For lists of detected and suppressed errors, rerun with: -s
+==27536== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
 
 ### Build
 Now, to build the project execute the following commands from the project's root directory (e.g. `~/{project-root}`).
@@ -120,7 +162,6 @@ Below are features that may add value to the project over time:
 - Runner access/instantiation
 - Token/secret management (e.g. docker/gitlab/conan registry)
 - `gitlab-ci.yml` (e.g. conan/docker deployment)
-- No static/dynamic analysis tools are currently used, but could be added as pipeline stages in the future
 - `gitlab pages` (user guide documentation)
 - Doxygen comments are added for cpp, but not generated into a document
 - OS/ARCH agnostic deployment

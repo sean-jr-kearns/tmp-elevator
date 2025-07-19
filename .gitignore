@@ -46,6 +46,7 @@ env/
 
 # C++
 deploy/*
+reports/*
 
 # Compiled Object files
 *.o

@@ -109,7 +109,7 @@ On completion a report like below should be produced in this projects `reports` 
 Now, to build the project execute the following commands from the project's root directory (e.g. `~/{project-root}`).
 
 ```bash
-conan create .
+conan create . -o with_tests=True --build=missing
 ```
 
 Then verify that the local conan cache has the package.
@@ -163,10 +163,11 @@ Below are features that may add value to the project over time:
 - Token/secret management (e.g. docker/gitlab/conan registry)
 - `gitlab-ci.yml` (e.g. conan/docker deployment)
 - `gitlab pages` (user guide documentation)
+- `gcovr` report generation 
 - Doxygen comments are added for cpp, but not generated into a document
 - OS/ARCH agnostic deployment
 - Elevator stream of inputs (from floors and buttons)
     - See `~/{project-root}/prototypes/elevator-prototype.ipynb` for more details
 - Elevator configuration file
 - Elevator interface/execution improvements (e.g. arg names aren't defined but could be from bash/docker-entrypoint.d)
-- No visual representation of the elevator exists but with a gRPC interface and a react frontend users could start to visualize the elevator
+- Visual representation of the elevator exists but with a gRPC interface and a react frontend users could start to visualize the elevator

@@ -9,12 +9,12 @@ namespace Demo
     {
     public:
         /*
-        * @brief default constructor (deleted)
+        * @brief Default constructor (deleted)
         */
         Elevator() = delete;
 
         /*
-        * @brief constructor with inputs
+        * @brief Constructor with inputs
         * @param[in] floor_travel_time Time it takes to travel between floors
         * @param[in] starting_floor Floor that the elevator starts at
         * @param[in] number_of_floors Total number of accessible floors
@@ -22,14 +22,29 @@ namespace Demo
         Elevator(int floor_travel_time, int starting_floor, int number_of_floors);
 
         /*
-        * @brief destructor
+        * @brief Destructor
         */
-        virtual ~Elevator();
+        ~Elevator();
 
         /*
-        * @brief copy constructor (deleted)
+        * @brief Copy constructor (deleted)
         */
         Elevator(const Elevator& that) = delete;
+
+        /*
+        * @brief Copy assignment operator (deleted)
+        */
+        Elevator& operator=(const Elevator& other) = delete;
+
+        /*
+        * @brief Move constructor (default)
+        */
+        Elevator(Elevator&& other) noexcept = default;
+
+        /*
+        * @brief Move assignment operator (default)
+        */
+        Elevator& operator=(Elevator&& other) noexcept = default;
     
     public:
         /*

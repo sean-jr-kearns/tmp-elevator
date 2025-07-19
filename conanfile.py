@@ -5,7 +5,7 @@ import os
 
 class Elevator(ConanFile):
     name = "elevator"
-    version = "1.0.1"
+    version = "1.0.2"
 
     settings = "os", "compiler", "build_type", "arch"
     

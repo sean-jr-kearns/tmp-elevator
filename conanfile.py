@@ -5,20 +5,28 @@ import os
 
 class Elevator(ConanFile):
     name = "elevator"
-    version = "1.0.0"
+    version = "1.0.1"
 
     settings = "os", "compiler", "build_type", "arch"
+    
+    options = {
+        "with_tests": [True, False],
+    }
+    default_options = {
+        "with_tests": False,
+    }
+    
     generators = "CMakeDeps"
-
     exports_sources = "CMakeLists.txt", "src/*", "tests/*"
-    requires = "gtest/1.14.0"
     test_type = "explicit"
+    
+    def requirements(self):
+        self.requires("spdlog/1.15.0")
+        if self.options.with_tests:
+            self.requires("gtest/1.15.0")
 
     def layout(self):
         cmake_layout(self)
-        # Optional: explicitly set where libs and includes go
-        #self.cpp.package.libdirs = ["lib"]
-        #self.cpp.package.includedirs = ["include"]
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -28,12 +36,15 @@ class Elevator(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake.configure(variables={"WITH_TESTS": self.options.with_tests})
         cmake.build()
+        
+        if self.options.with_tests:
+            self.run("ctest --output-on-failure", cwd=self.build_folder)
 
     def test(self):
         if not self.conf.get("tools.build:skip_test", default=False):
-            self.run(os.path.join(self.cpp.build.bindir, "test_elevator"), env="conanrun")
+            self.run("ctest --output-on-failure", cwd=self.build_folder)
 
     def package(self):
         cmake = CMake(self)

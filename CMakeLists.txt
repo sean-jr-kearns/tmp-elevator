@@ -10,30 +10,16 @@ set(TARGET_NAME main)
 
 project(${TARGET_NAME})
 
-# Get external dependencies
-include(FetchContent)
-# spdlog
-FetchContent_Declare(
-  spdlog
-  GIT_REPOSITORY https://github.com/gabime/spdlog.git
-  GIT_TAG v1.15.0
-)
-FetchContent_MakeAvailable(spdlog)
-
-# GoogleTest
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG v1.14.0
-)
-FetchContent_MakeAvailable(googletest)
-
-# Add libraries
-#file(GLOB SRC "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-#add_library(${TARGET_NAME} SHARED ${SRC})
+find_package(spdlog REQUIRED)
 
 # Add subdirectories 
 add_subdirectory(src)
-add_subdirectory(tests)
+
+# Only build tests if enabled
+if(WITH_TESTS)
+    enable_testing()
+    find_package(GTest REQUIRED)
+    add_subdirectory(tests)
+endif()
 
 target_compile_options(${TARGET_NAME} PRIVATE -Werror)

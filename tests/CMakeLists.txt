@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 set(TARGET_NAME test_elevator)
 
-enable_testing()
-
-file(GLOB SRC "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+file(GLOB SRC "${CMAKE_CURRENT_SOURCE_DIR}/Elevator/*.cpp")
 
 add_executable(${TARGET_NAME} ${SRC})
 

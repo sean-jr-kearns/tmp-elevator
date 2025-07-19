@@ -122,7 +122,7 @@ conan list
 Found 2 pkg/version recipes matching * in local cache
 Local Cache
   elevator
-    elevator/1.0.0
+    elevator/${VERSION}
 ```
 
 ### Install

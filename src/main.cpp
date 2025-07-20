@@ -1,57 +1,62 @@
 #include "Elevator.hpp"
+#include "Utilities.hpp"
 
 #include <string>
 #include <vector>
 #include <sstream>
 
+#include "cxxopts.hpp"
 #include <spdlog/spdlog.h>
-
-// Consider using boost instead in the future 
-// Stackoverflow /right-way-to-split-an-stdstring-into-a-vectorstring
-std::vector<int> parse_comma_numbers(const std::string& input) {
-    std::vector<int> numbers;
-    std::stringstream ss(input);
-    std::string token;
-
-    while (std::getline(ss, token, ',')) {
-        try 
-        {
-            numbers.push_back(std::stoi(token));
-        } catch (...)
-        {
-            spdlog::error("Invalid number: {}", token);
-        }
-    }
-
-    return numbers;
-}
+#include <spdlog/sinks/basic_file_sink.h>
 
 int main(int argc, char* argv[]) 
 {
-    spdlog::info("Executing elevator program {} with {} arguments", argv[0], argc);
+    // Initialize cxxopts options 
+    cxxopts::Options options("ElevatorSim", "Elevator simulator");
 
-    if (argc != 4) { // 4 includes the program name itself
-        spdlog::error("Incorrect number of arguments found ({})", argv[0]);
-        spdlog::error("Expected 4");
-        return 1; // Indicate an error
-    }
+    options.add_options()
+        ("s,starting_floor", "Starting floor", cxxopts::value<int>()->default_value("0"))
+        ("t,floors", "Floors to traverse", cxxopts::value<std::string>()->default_value("1,10,20,30,40"))
+        ("l,log_level", "Log level (trace, debug, info, warn, err, critical, off)", 
+                cxxopts::value<std::string>()->default_value("info"))
+        ("f,log_file", "Log file path (optional)", 
+                cxxopts::value<std::string>())
+        ("h,help", "Print help");
 
-    int number_of_floors;
-    int starting_floor;
-    std::vector<int> floors;
+    auto result = options.parse(argc, argv);
 
-    try 
+    if (result.count("help"))
     {
-        number_of_floors = std::stoi(argv[1]);
-        starting_floor = std::stoi(argv[2]);
-        floors = parse_comma_numbers(argv[3]);
-    }
-    catch (...)
-    {
-        return 1;
+        spdlog::info(options.help());
+        return 0;
     }
 
-    Demo::Elevator demo_elevator(starting_floor, number_of_floors);
+    // Handle spdlog log level and file options
+    spdlog::level::level_enum log_level = Demo::Utilities::string_to_log_level(
+        result["log_level"].as<std::string>());
+
+    spdlog::set_level(log_level);
+
+    if (result.count("log_file")) 
+    {
+        auto file_logger = spdlog::basic_logger_mt("file_logger", result["log_file"].as<std::string>());
+        spdlog::set_default_logger(file_logger);
+    }
+
+    spdlog::info("> Logging initialized with level: {}", result["log_level"].as<std::string>());
+    spdlog::info("> Elevator config:");
+    spdlog::info("\t> Starting floor: {}", result["starting_floor"].as<int>());
+    spdlog::info("\t> Floors to traverse: {}", result["floors"].as<std::string>());
+
+    // Initialize script elevator variables
+    char delimeter = ',';
+    int starting_floor = result["starting_floor"].as<int>();
+    std::vector<int> floors = Demo::Utilities::parse_string_on_delimiter(
+        delimeter, result["floors"].as<std::string>());
+
+    // Run demo elevator simulation 
+    // (e.g. traverse floors and log execution details)
+    Demo::Elevator demo_elevator(starting_floor);
     
     demo_elevator.traverse_floors(floors);
 

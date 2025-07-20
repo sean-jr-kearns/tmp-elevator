@@ -10,6 +10,7 @@ set(TARGET_NAME main)
 
 project(${TARGET_NAME})
 
+find_package(cxxopts REQUIRED)
 find_package(spdlog REQUIRED)
 
 # Add subdirectories 

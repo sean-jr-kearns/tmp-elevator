@@ -9,47 +9,31 @@ using Demo::Elevator;
 class ElevatorTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        elevator = std::make_unique<Elevator>(0, 10);
+        elevator = std::make_unique<Elevator>(0);
     }
 
     std::unique_ptr<Elevator> elevator;
 };
 
 TEST_F(ElevatorTest, ConstructorDoesNotThrow) {
-    EXPECT_NO_THROW(Elevator(0, 10));
-}
-
-TEST_F(ElevatorTest, TravelDurationBetweenFloorsCorrect) {
-    int duration = elevator->get_travel_duration_between_floors(1, 4);
-    EXPECT_EQ(duration, 30);
+    //SETUP
+    //ACT
+    //ASSERT
+    EXPECT_NO_THROW(Elevator(0));
 }
 
 TEST_F(ElevatorTest, TraverseFloorsEmptyReturnsFalse) {
+    //SETUP
     std::vector<int> empty;
+    //ACT
+    //ASSERT
     EXPECT_FALSE(elevator->traverse_floors(empty));
 }
 
 TEST_F(ElevatorTest, TraverseFloorsValidFloorsReturnsTrue) {
+    //SETUP
     std::vector<int> floors = {2, 5, 3};
+    //ACT
+    //ASSERT
     EXPECT_TRUE(elevator->traverse_floors(floors));
-}
-
-TEST_F(ElevatorTest, SetValidStartingFloor) {
-    EXPECT_TRUE(elevator->set_starting_floor(5));
-}
-
-TEST_F(ElevatorTest, SetInvalidStartingFloorNegative) {
-    EXPECT_FALSE(elevator->set_starting_floor(-2));
-}
-
-TEST_F(ElevatorTest, SetInvalidStartingFloorAboveRange) {
-    EXPECT_FALSE(elevator->set_starting_floor(100));
-}
-
-TEST_F(ElevatorTest, SetValidNumberOfFloors) {
-    EXPECT_TRUE(elevator->set_number_of_floors(20));
-}
-
-TEST_F(ElevatorTest, SetInvalidNumberOfFloorsZero) {
-    EXPECT_FALSE(elevator->set_number_of_floors(0));
 }

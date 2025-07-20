@@ -14,9 +14,8 @@ namespace Demo
         /**
         * @brief Constructor with inputs
         * @param[in] starting_floor Floor that the elevator starts at
-        * @param[in] number_of_floors Total number of accessible floors
         */
-        Elevator(int starting_floor, int number_of_floors);
+        Elevator(int starting_floor);
 
         //! @brief Destructor
         ~Elevator();
@@ -35,40 +34,25 @@ namespace Demo
     
     public:
         /**
-        * @brief Gets total travel time between two traversable floors
-        * @param[in] floors Total number of floors traveled to
-        * @return Returns true if travel time is acquired, otherwise returns false
-        */
-        int get_travel_duration_between_floors(int last_floor, int next_floor);
-
-        /**
         * @brief Travels ordered floors
         * @param[in] floors Floors to be traveled to
         * @return Returns true if traveled floors are acquired, otherwise returns false
         */
         bool traverse_floors(std::vector<int> floors);
 
-        /**
-        * @brief Sets starting floor
-        * @return Returns true if starting floor is set, otherwise returns false
-        */
-        bool set_starting_floor(int starting_floor);
-
-        /**
-        * @brief Sets total number of floors accessible by the elevator for travel
-        * @return Returns true if number of floors is set, otherwise returns false
-        */
-        bool set_number_of_floors(int number_of_floors);
-
     private: 
+        /**
+        * @brief Gets total travel time between two traversable floors
+        * @param[in] floors Total number of floors traveled to
+        * @return Returns true if travel time is acquired, otherwise returns false
+        */
+        int get_travel_duration_between_floors(int last_floor, int next_floor);
+
+    private:
         //! Starting floor of the elevator
         int m_starting_floor;
 
         //! Last floor the elevator was at
         int m_last_floor;
-
-        //! Total number of accessible floors 
-        int m_number_of_floors;
-
     }; //class Elevator
 }; //namespace Demo

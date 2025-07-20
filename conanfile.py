@@ -5,7 +5,7 @@ import os
 
 class Elevator(ConanFile):
     name = "elevator"
-    version = "1.0.3"
+    version = "1.0.4"
 
     settings = "os", "compiler", "build_type", "arch"
     
@@ -21,7 +21,9 @@ class Elevator(ConanFile):
     test_type = "explicit"
     
     def requirements(self):
+        self.requires("cxxopts/3.3.1")
         self.requires("spdlog/1.15.0")
+
         if self.options.with_tests:
             self.requires("gtest/1.15.0")
 

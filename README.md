@@ -22,12 +22,11 @@ containers.
 The elevator project implementation itself has some built-in assumptions as well:
 
 - Floor travel time is fixed at 10 seconds
-- 3 arguments are expected for the executable
-- Ordered inputs for the executable are:
+- 2 arguments are expected for the executable
+- Required inputs for the executable are:
 
 | name | type | example |
 | --- | --- | --- |
-| number of floors | int | 12 |
 | starting floor | int | 4 |
 | floors to traverse | string | 1,2,6,15,77 |
 
@@ -89,28 +88,28 @@ To run dynamic analysis on this project execute the following:
 cd ~/{project-root}/deploy
 valgrind --leak-check=full --show-leak-kinds=all \
          --track-origins=yes --log-file=../reports/valgrind_report.txt \
-         ./bin/main 100 12 1,2,12,17,99 
+         ./bin/main -s "1" -t "1,2,3,4,12,19,1" -l "trace" -f "logfile.txt"
 ```
 
 On completion a report like below should be produced in this projects 
-`reports` directory.
+`reports` directory (see below for example output).
 
 ```log
-==27536== Memcheck, a memory error detector
-==27536== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==27536== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==27536== Command: ./bin/main 100 12 1,2,12,17,99
-==27536== Parent PID: 468
-==27536== 
-==27536== 
-==27536== HEAP SUMMARY:
-==27536==     in use at exit: 0 bytes in 0 blocks
-==27536==   total heap usage: 29 allocs, 29 frees, 82,347 bytes allocated
-==27536== 
-==27536== All heap blocks were freed -- no leaks are possible
-==27536== 
-==27536== For lists of detected and suppressed errors, rerun with: -s
-==27536== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==20033== Memcheck, a memory error detector
+==20033== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==20033== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==20033== Command: ./bin/main -s 1 -t 1,2,3,4,12,19,1 -l trace -f logfile.txt
+==20033== Parent PID: 468
+==20033== 
+==20033== 
+==20033== HEAP SUMMARY:
+==20033==     in use at exit: 0 bytes in 0 blocks
+==20033==   total heap usage: 4,016 allocs, 4,016 frees, 149,791 bytes allocated
+==20033== 
+==20033== All heap blocks were freed -- no leaks are possible
+==20033== 
+==20033== For lists of detected and suppressed errors, rerun with: -s
+==20033== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
 ### Build
@@ -138,10 +137,10 @@ Local Cache
 ### Install
 Once verified install the package locally to execute.
 
-```
+```bash
 cd ~/{package-root}/deploy 
 rm -r ./*
-conan install --requires elevator/${VERSION} --deployer-package elevator/${VERSION}
+conan install --requires elevator/${VERSION} --deployer-package elevator/${VERSION} --build=missing
 ```
 
 The deployment should look similar to the image below (`with_tests=False`)
@@ -152,24 +151,18 @@ The deployment should look similar to the image below (`with_tests=False`)
 From the `deploy` directory execute the program with the following command. 
 Positional arguments are:
 
-  - `number_of_floors`
-  - `staring_floor`
-  - `floors_to_traverse`
+  - `--staring_floor` (`-s`)
+  - `--floors` (`-t`)
 
 ```bash
-./bin/main 15 12 1,2,12,17
-[2025-07-18 16:59:09.013] [info] Executing elevator program ./bin/main, params 4
-[2025-07-18 16:59:09.014] [info] Elevator constructor called.
-[2025-07-18 16:59:09.014] [info] Traveling between floors 12 and 1
-[2025-07-18 16:59:09.014] [info] Took 110 to reach floor 1
-[2025-07-18 16:59:09.014] [info] Traveling between floors 12 and 2
-[2025-07-18 16:59:09.014] [info] Took 100 to reach floor 2
-[2025-07-18 16:59:09.014] [info] Traveling between floors 12 and 12
-[2025-07-18 16:59:09.014] [info] Took 0 to reach floor 12
-[2025-07-18 16:59:09.014] [info] Traveling between floors 12 and 17
-[2025-07-18 16:59:09.014] [info] Took 50 to reach floor 17
-[2025-07-18 16:59:09.014] [info] 370 12, 1, 2, 12, 17
-[2025-07-18 16:59:09.014] [info] Elevator destructor called.
+./bin/main -s "1" -t "1,2,3,4,12,19,1"
+[2025-07-20 12:24:52.568] [info] > Logging initialized with level: info
+[2025-07-20 12:24:52.568] [info] > Elevator config:
+[2025-07-20 12:24:52.568] [info]        > Starting floor: 1
+[2025-07-20 12:24:52.568] [info]        > Floors to traverse: 1,2,3,4,12,19,1
+[2025-07-20 12:24:52.568] [info] > Elevator constructor called.
+[2025-07-20 12:24:52.568] [info]        > (Total travel time: 350, Floors traversed: 1, 1, 2, 3, 4, 12, 19, 1)
+[2025-07-20 12:24:52.568] [info] > Elevator destructor called.
 ```
 
 ## Not Implemented
@@ -186,6 +179,5 @@ Below are features that may add value to the project over time:
     - See `~/{project-root}/prototypes/elevator-prototype.ipynb` for more details
 - Elevator configuration file
 - Elevator interface/execution improvements 
-  (e.g. arg names aren't defined but could be from bash/docker-entrypoint.d)
 - Visual representation of the elevator exists but with a gRPC interface and 
   a react frontend users could start to visualize the elevator

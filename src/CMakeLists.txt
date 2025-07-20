@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 set(TARGET_NAME main)
 
 add_subdirectory(Elevator)
+add_subdirectory(Utilities)
 
 add_executable(${TARGET_NAME}
     main.cpp
@@ -11,6 +12,8 @@ add_executable(${TARGET_NAME}
 target_link_libraries(${TARGET_NAME}
     PRIVATE 
         Elevator
+        Utilities
+        cxxopts::cxxopts
         spdlog::spdlog
 )
 

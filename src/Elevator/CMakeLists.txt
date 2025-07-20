@@ -26,6 +26,8 @@ install(
 )
 
 install(
-    FILES Elevator.hpp 
+    FILES 
+        Elevator.hpp 
+        ElevatorConstants.hpp
     DESTINATION include
 )

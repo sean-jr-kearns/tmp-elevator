@@ -1,14 +1,13 @@
 #include "Elevator.hpp"
+#include "ElevatorConstants.hpp"
 
 #include <string>
 #include <vector>
 
 #include <spdlog/spdlog.h>
 
-
 Demo::Elevator::Elevator(
-    int floor_travel_time, int starting_floor, int number_of_floors) :
-    m_floor_travel_time(floor_travel_time),
+    int starting_floor, int number_of_floors) :
     m_starting_floor(starting_floor),
     m_last_floor(starting_floor),
     m_number_of_floors(number_of_floors)
@@ -16,17 +15,15 @@ Demo::Elevator::Elevator(
     spdlog::info("Elevator constructor called.");
 };
 
-
 Demo::Elevator::~Elevator()
 {
     spdlog::info("Elevator destructor called.");
 };
 
-
 int Demo::Elevator::get_travel_duration_between_floors(
-    int travel_time, int last_floor, int next_floor)
+    int last_floor, int next_floor)
 {
-    return abs(last_floor - next_floor) * travel_time;
+    return abs(last_floor - next_floor) * ElevatorConstants::kFloorTravelTime;
 };
        
 bool Demo::Elevator::traverse_floors(std::vector<int> floors)
@@ -40,7 +37,7 @@ bool Demo::Elevator::traverse_floors(std::vector<int> floors)
 
     // Get travel duration from starting floor to first floor in floors 
     int _total_travel_duration = Demo::Elevator::get_travel_duration_between_floors(
-            m_floor_travel_time, m_starting_floor, floors.front());
+        m_starting_floor, floors.front());
     std::string _floors_visited = std::to_string(m_starting_floor);
 
     for (std::vector<int>::iterator it = floors.begin(); it != floors.end(); ++it)
@@ -48,7 +45,7 @@ bool Demo::Elevator::traverse_floors(std::vector<int> floors)
         spdlog::info("Traveling between floors {} and {}", m_last_floor, *it);
 
         int _travel_duration = Demo::Elevator::get_travel_duration_between_floors(
-            m_floor_travel_time, m_last_floor, *it);
+            m_last_floor, *it);
     
         _total_travel_duration += _travel_duration;
         _floors_visited += (", " + std::to_string(*it));
@@ -61,21 +58,6 @@ bool Demo::Elevator::traverse_floors(std::vector<int> floors)
     return true;
 };
 
-
-bool Demo::Elevator::set_floor_travel_time(int travel_time)
-{
-    if (travel_time < 0)
-    {
-        spdlog::warn("Invalid floor_travel_time.");
-        return false;
-    }
-
-    m_floor_travel_time = travel_time;
-
-    return true;
-};
-
- 
 bool Demo::Elevator::set_starting_floor(int starting_floor)
 {
     if (starting_floor < 0 || starting_floor > m_number_of_floors)
@@ -89,7 +71,6 @@ bool Demo::Elevator::set_starting_floor(int starting_floor)
     return true;
 };
 
-
 bool Demo::Elevator::set_number_of_floors(int number_of_floors)
 {
     if (number_of_floors <= 0)
@@ -99,7 +80,7 @@ bool Demo::Elevator::set_number_of_floors(int number_of_floors)
         return false;
     }
 
-    m_floor_travel_time = number_of_floors;
+    m_number_of_floors = number_of_floors;
 
     return true;
 };

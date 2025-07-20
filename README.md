@@ -5,13 +5,18 @@ is a prototype in python under `./prototypes` and the core implementation
 is with c++17.
 
 ## Assumptions
-There are several assumptions associated with the project and can be found below.
+There are several assumptions associated with the project which are in two 
+categories:
+
+- System: machine capabilities and user permissions
+- Elevator: features restrictions
 
 ### System Specific
 The user has `sudo` access for installations and is operating on a `Linux x64_64`
 machine. 
 
-**Note** these requirements could be resovled by developing/deploying within a container.
+**Note** these requirements could be resovled by developing/deploying within 
+containers.
 
 ### Elevator Specific
 The elevator project implementation itself has some built-in assumptions as well:
@@ -63,17 +68,19 @@ gdb --version
 conan --version
 ```
 
-One can make changes in the future to their conan profile here `~/.conan2/profiles/default`.
+One can make changes in the future to their conan profile here 
+`~/.conan2/profiles/default`.
 
 ### Static Analysis
 To run static analysis on this project execute the following:
 
 ```bash
 cd ~/{project-root}/src
-cppcheck --enable=all --inconclusive --std=c++17 --output-file=./reports/cppcheck_report.txt .
+cppcheck --enable=all --inconclusive --std=c++17 \
+--output-file=./reports/cppcheck_report.txt .
 ```
 
-Validate in this projects reports directory that `cppcheck_report.txt` is empty
+Validate in this projects reports directory that `cppcheck_report.txt` is empty.
 
 ### Dynamic Analysis
 To run dynamic analysis on this project execute the following:
@@ -85,7 +92,8 @@ valgrind --leak-check=full --show-leak-kinds=all \
          ./bin/main 100 12 1,2,12,17,99 
 ```
 
-On completion a report like below should be produced in this projects `reports` directory
+On completion a report like below should be produced in this projects 
+`reports` directory.
 
 ```log
 ==27536== Memcheck, a memory error detector
@@ -106,7 +114,8 @@ On completion a report like below should be produced in this projects `reports` 
 ```
 
 ### Build
-Now, to build the project execute the following commands from the project's root directory (e.g. `~/{project-root}`).
+Now, to build the project execute the following commands from the project's 
+root directory (e.g. `~/{project-root}`).
 
 ```bash
 conan create . -o with_tests=True --build=missing
@@ -119,8 +128,9 @@ conan list
 ```
 
 ```log
-Found 2 pkg/version recipes matching * in local cache
+Found <n> pkg/version recipes matching * in local cache
 Local Cache
+...
   elevator
     elevator/${VERSION}
 ```
@@ -130,15 +140,21 @@ Once verified install the package locally to execute.
 
 ```
 cd ~/{package-root}/deploy 
+rm -r ./*
 conan install --requires elevator/${VERSION} --deployer-package elevator/${VERSION}
 ```
 
-The deployment should look similar to this
+The deployment should look similar to the image below (`with_tests=False`)
 
 ![deployment](./files/images/deployment-example.jpg)
 
 ### Run
-From the `deploy` directory execute the program with the following command. Positional arguments are `number_of_floors`, `staring_floor`, and `floors_to_traverse`.
+From the `deploy` directory execute the program with the following command. 
+Positional arguments are:
+
+  - `number_of_floors`
+  - `staring_floor`
+  - `floors_to_traverse`
 
 ```bash
 ./bin/main 15 12 1,2,12,17
@@ -169,5 +185,7 @@ Below are features that may add value to the project over time:
 - Elevator stream of inputs (from floors and buttons)
     - See `~/{project-root}/prototypes/elevator-prototype.ipynb` for more details
 - Elevator configuration file
-- Elevator interface/execution improvements (e.g. arg names aren't defined but could be from bash/docker-entrypoint.d)
-- Visual representation of the elevator exists but with a gRPC interface and a react frontend users could start to visualize the elevator
+- Elevator interface/execution improvements 
+  (e.g. arg names aren't defined but could be from bash/docker-entrypoint.d)
+- Visual representation of the elevator exists but with a gRPC interface and 
+  a react frontend users could start to visualize the elevator

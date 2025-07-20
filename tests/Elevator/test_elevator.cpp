@@ -9,18 +9,18 @@ using Demo::Elevator;
 class ElevatorTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        elevator = std::make_unique<Elevator>(10, 0, 10);
+        elevator = std::make_unique<Elevator>(0, 10);
     }
 
     std::unique_ptr<Elevator> elevator;
 };
 
 TEST_F(ElevatorTest, ConstructorDoesNotThrow) {
-    EXPECT_NO_THROW(Elevator(10, 0, 10));
+    EXPECT_NO_THROW(Elevator(0, 10));
 }
 
 TEST_F(ElevatorTest, TravelDurationBetweenFloorsCorrect) {
-    int duration = elevator->get_travel_duration_between_floors(10, 1, 4);
+    int duration = elevator->get_travel_duration_between_floors(1, 4);
     EXPECT_EQ(duration, 30);
 }
 
@@ -32,14 +32,6 @@ TEST_F(ElevatorTest, TraverseFloorsEmptyReturnsFalse) {
 TEST_F(ElevatorTest, TraverseFloorsValidFloorsReturnsTrue) {
     std::vector<int> floors = {2, 5, 3};
     EXPECT_TRUE(elevator->traverse_floors(floors));
-}
-
-TEST_F(ElevatorTest, SetValidFloorTravelTime) {
-    EXPECT_TRUE(elevator->set_floor_travel_time(10));
-}
-
-TEST_F(ElevatorTest, SetInvalidFloorTravelTimeNegative) {
-    EXPECT_FALSE(elevator->set_floor_travel_time(-1));
 }
 
 TEST_F(ElevatorTest, SetValidStartingFloor) {

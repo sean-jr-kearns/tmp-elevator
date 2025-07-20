@@ -28,15 +28,14 @@ std::vector<int> parse_comma_numbers(const std::string& input) {
 
 int main(int argc, char* argv[]) 
 {
-    spdlog::info("Executing elevator program {}, params {}", argv[0], argc);
+    spdlog::info("Executing elevator program {} with {} arguments", argv[0], argc);
 
-    if (argc != 4) { // 3 includes the program name itself
-        spdlog::error("Incorrect number of arguments found: {}", argv[0]);
+    if (argc != 4) { // 4 includes the program name itself
+        spdlog::error("Incorrect number of arguments found ({})", argv[0]);
         spdlog::error("Expected 4");
         return 1; // Indicate an error
     }
 
-    int floor_travel_time = 10;
     int number_of_floors;
     int starting_floor;
     std::vector<int> floors;
@@ -52,8 +51,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    Demo::Elevator demo_elevator(
-        floor_travel_time, starting_floor, number_of_floors);
+    Demo::Elevator demo_elevator(starting_floor, number_of_floors);
     
     demo_elevator.traverse_floors(floors);
 

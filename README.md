@@ -2,7 +2,7 @@
 This project represents a possible implementation of an elevator. To provide 
 details on personal interactions with various languages the initial solution 
 is a prototype in python under `./prototypes` and the core implementation 
-is with c++17.
+is with C++17.
 
 ## Assumptions
 There are several assumptions associated with the project which are in two 
@@ -12,8 +12,7 @@ categories:
 - Elevator: features restrictions
 
 ### System Specific
-The user has `sudo` access for installations and is operating on a `Linux x64_64`
-machine. 
+The user has `sudo` access for installations on `Linux`/`x86_64` 
 
 **Note** these requirements could be resovled by developing/deploying within 
 containers.
@@ -55,7 +54,7 @@ pip3 show conan
 conan profile detect
 ```
 
-### Verifying installation requirements
+### Verifying Installation Requirements
 Below are commands to sanity check installations occurred as expected.
 
 ```bash
@@ -68,7 +67,18 @@ conan --version
 ```
 
 One can make changes in the future to their conan profile here 
-`~/.conan2/profiles/default`.
+`~/.conan2/profiles/default`. See below for default example in this project.
+
+```ini
+[settings]
+arch=x86_64
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu17
+compiler.libcxx=libstdc++11
+compiler.version=11
+os=Linux
+```
 
 ### Static Analysis
 To run static analysis on this project execute the following:
@@ -140,7 +150,8 @@ Once verified install the package locally to execute.
 ```bash
 cd ~/{package-root}/deploy 
 rm -r ./*
-conan install --requires elevator/${VERSION} --deployer-package elevator/${VERSION} --build=missing
+conan install --requires elevator/${VERSION} \
+      --deployer-package elevator/${VERSION} --build=missing
 ```
 
 The deployment should look similar to the image below (`with_tests=False`)
@@ -168,16 +179,34 @@ Positional arguments are:
 ## Not Implemented
 Below are features that may add value to the project over time:
 
+### Deployments
 - Runner access/instantiation
 - Token/secret management (e.g. docker/gitlab/conan registry)
 - `gitlab-ci.yml` (e.g. conan/docker deployment)
+- Docker development environment
+
+### Documentation
 - `gitlab pages` (user guide documentation)
-- `gcovr` report generation 
-- Doxygen comments are added for cpp, but not generated into a document
-- OS/ARCH agnostic deployment
+- `gcovr` test report generation 
+- Doxygen comments are added, but not generated as a document
+- OS/ARCH agnostic deployment (e.g. os/arch conan profiles)
+
+### Elevator 
 - Elevator stream of inputs (from floors and buttons)
-    - See `~/{project-root}/prototypes/elevator-prototype.ipynb` for more details
+    - See `~/{project-root}/prototypes/elevator-prototype.ipynb` 
+      for more details
 - Elevator configuration file
+    - How many floors?
+    - Security settings (do any floors require certain access codes/card entry?)
+    - Fire safety settings (what happens when the elevator stops between floors?)
+    - Weight capacity
+    - Elevator size
+- Should the order of floor visits ever be optimized?
+- Should the elevator ever have a default resting floor?
 - Elevator interface/execution improvements 
-- Visual representation of the elevator exists but with a gRPC interface and 
-  a react frontend users could start to visualize the elevator
+    - Main controller?
+    - How does the main controller receive/respond to button inputs on each 
+      floor and within the elevator itself?
+    - What sensors are available in the elevator?
+    - Should the program wait the travel time?
+    - Should there be a visual representation of the elevator?

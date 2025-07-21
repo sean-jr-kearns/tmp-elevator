@@ -38,7 +38,8 @@ namespace Demo::Utilities
     * @param level spdlog log level
     * @returns spdlog log level enumeration
     */
-    static inline spdlog::level::level_enum string_to_log_level(const std::string& level) {
+    static inline spdlog::level::level_enum string_to_log_level(const std::string& level) 
+    {
         static const std::map<std::string, spdlog::level::level_enum> level_map = {
             {"trace", spdlog::level::trace},
             {"debug", spdlog::level::debug},
@@ -55,7 +56,7 @@ namespace Demo::Utilities
             return it->second;
         }
 
-    // Default to info level or handle error
-    return spdlog::level::info;
-}
+        // Default to info level or handle error
+        return spdlog::level::info;
+    };
 }; // namespace Demo::Utilities

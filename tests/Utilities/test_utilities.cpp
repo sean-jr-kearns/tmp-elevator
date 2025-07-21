@@ -3,7 +3,8 @@
 
 using Demo::Utilities::parse_string_on_delimiter;
 
-TEST(ParseStringOnDelimiterTest, BasicCommaSplit) {
+TEST(ParseStringOnDelimiterTest, BasicCommaSplit) 
+{
     //SETUP
     char delimiter = ',';
     std::string input = "1,2,3,4";
@@ -14,7 +15,8 @@ TEST(ParseStringOnDelimiterTest, BasicCommaSplit) {
     EXPECT_EQ(result, expected);
 }
 
-TEST(ParseStringOnDelimiterTest, SpaceAndTabSplit) {
+TEST(ParseStringOnDelimiterTest, SpaceAndTabSplit) 
+{
     //SETUP
     char delimiter = '\t';
     std::string input = "10\t20\t30";
@@ -25,7 +27,8 @@ TEST(ParseStringOnDelimiterTest, SpaceAndTabSplit) {
     EXPECT_EQ(result, expected);
 }
 
-TEST(ParseStringOnDelimiterTest, EmptyString) {
+TEST(ParseStringOnDelimiterTest, EmptyString) 
+{
     //SETUP
     char delimiter = ',';
     std::string input = "";
@@ -35,7 +38,8 @@ TEST(ParseStringOnDelimiterTest, EmptyString) {
     EXPECT_TRUE(result.empty());
 }
 
-TEST(ParseStringOnDelimiterTest, NonNumericPartsIgnored) {
+TEST(ParseStringOnDelimiterTest, NonNumericPartsIgnored) 
+{
     //SETUP
     char delimiter = ',';
     std::string input = "1,2,x,4";

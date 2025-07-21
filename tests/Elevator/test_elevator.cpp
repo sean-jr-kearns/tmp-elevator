@@ -6,7 +6,8 @@
 
 using Demo::Elevator;
 
-class ElevatorTest : public ::testing::Test {
+class ElevatorTest : public ::testing::Test 
+{
 protected:
     void SetUp() override {
         elevator = std::make_unique<Elevator>(0);
@@ -15,14 +16,16 @@ protected:
     std::unique_ptr<Elevator> elevator;
 };
 
-TEST_F(ElevatorTest, ConstructorDoesNotThrow) {
+TEST_F(ElevatorTest, ConstructorDoesNotThrow) 
+{
     //SETUP
     //ACT
     //ASSERT
     EXPECT_NO_THROW(Elevator(0));
 }
 
-TEST_F(ElevatorTest, TraverseFloorsEmptyReturnsFalse) {
+TEST_F(ElevatorTest, TraverseFloorsEmptyReturnsFalse) 
+{
     //SETUP
     std::vector<int> empty;
     //ACT
@@ -30,7 +33,8 @@ TEST_F(ElevatorTest, TraverseFloorsEmptyReturnsFalse) {
     EXPECT_FALSE(elevator->traverse_floors(empty));
 }
 
-TEST_F(ElevatorTest, TraverseFloorsValidFloorsReturnsTrue) {
+TEST_F(ElevatorTest, TraverseFloorsValidFloorsReturnsTrue) 
+{
     //SETUP
     std::vector<int> floors = {2, 5, 3};
     //ACT

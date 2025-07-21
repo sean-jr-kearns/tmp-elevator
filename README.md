@@ -12,7 +12,8 @@ categories:
 - Elevator: features restrictions
 
 ### System Specific
-The user has `sudo` access for installations on `Linux`/`x86_64` 
+The user has `sudo` access for installations using a `Linux`/`x86_64` distro 
+like `Ubuntu 22.04`.
 
 **Note** these requirements could be resovled by developing/deploying within 
 containers.
@@ -91,37 +92,6 @@ cppcheck --enable=all --inconclusive --std=c++17 \
 
 Validate in this projects reports directory that `cppcheck_report.txt` is empty.
 
-### Dynamic Analysis
-To run dynamic analysis on this project execute the following:
-
-```bash
-cd ~/{project-root}/deploy
-valgrind --leak-check=full --show-leak-kinds=all \
-         --track-origins=yes --log-file=../reports/valgrind_report.txt \
-         ./bin/main -s "1" -t "1,2,3,4,12,19,1" -l "trace" -f "logfile.txt"
-```
-
-On completion a report like below should be produced in this projects 
-`reports` directory (see below for example output).
-
-```log
-==20033== Memcheck, a memory error detector
-==20033== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==20033== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==20033== Command: ./bin/main -s 1 -t 1,2,3,4,12,19,1 -l trace -f logfile.txt
-==20033== Parent PID: 468
-==20033== 
-==20033== 
-==20033== HEAP SUMMARY:
-==20033==     in use at exit: 0 bytes in 0 blocks
-==20033==   total heap usage: 4,016 allocs, 4,016 frees, 149,791 bytes allocated
-==20033== 
-==20033== All heap blocks were freed -- no leaks are possible
-==20033== 
-==20033== For lists of detected and suppressed errors, rerun with: -s
-==20033== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-```
-
 ### Build
 Now, to build the project execute the following commands from the project's 
 root directory (e.g. `~/{project-root}`).
@@ -157,6 +127,37 @@ conan install --requires elevator/${VERSION} \
 The deployment should look similar to the image below (`with_tests=False`)
 
 ![deployment](./files/images/deployment-example.jpg)
+
+### Dynamic Analysis
+To run dynamic analysis on this project execute the following:
+
+```bash
+cd ~/{project-root}/deploy
+valgrind --leak-check=full --show-leak-kinds=all \
+         --track-origins=yes --log-file=../reports/valgrind_report.txt \
+         ./bin/main -s "1" -t "1,2,3,4,12,19,1" -l "trace" -f "logfile.txt"
+```
+
+On completion a report like below should be produced in this projects 
+`reports` directory (see below for example output).
+
+```log
+==20033== Memcheck, a memory error detector
+==20033== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==20033== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==20033== Command: ./bin/main -s 1 -t 1,2,3,4,12,19,1 -l trace -f logfile.txt
+==20033== Parent PID: 468
+==20033== 
+==20033== 
+==20033== HEAP SUMMARY:
+==20033==     in use at exit: 0 bytes in 0 blocks
+==20033==   total heap usage: 4,016 allocs, 4,016 frees, 149,791 bytes allocated
+==20033== 
+==20033== All heap blocks were freed -- no leaks are possible
+==20033== 
+==20033== For lists of detected and suppressed errors, rerun with: -s
+==20033== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
 
 ### Run
 From the `deploy` directory execute the program with the following command. 

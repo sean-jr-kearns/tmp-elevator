@@ -48,6 +48,7 @@ bool Demo::Elevator::traverse_floors(std::vector<int> floors)
     
         _total_travel_duration += _travel_duration;
         _floors_visited += (", " + std::to_string(*it));
+        m_last_floor = *it;
 
         spdlog::debug("\t> Took {} seconds to reach floor {}", _travel_duration, *it);
     }

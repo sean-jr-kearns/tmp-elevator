@@ -163,7 +163,7 @@ On completion a report like below should be produced in this projects
 From the `deploy` directory execute the program with the following command. 
 Positional arguments are:
 
-  - `--staring_floor` (`-s`)
+  - `--starting_floor` (`-s`)
   - `--floors` (`-t`)
 
 ```bash
